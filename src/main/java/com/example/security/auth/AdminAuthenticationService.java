@@ -21,11 +21,15 @@ public class AdminAuthenticationService {
     public JwtService jwtService;
     private AuthenticationManager authenticationManager;
 
-    public User registerAdmin(User user) {
+    public AuthenticationResponse registerAdmin(User user, UserRepository userRepository) {
 
         passwordEncoder = new BCryptPasswordEncoder();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        jwtService = new JwtService();
+        String token = jwtService.generateToken(user);
 
-        return user;
+        userRepository.save(user);
+        return AuthenticationResponse.builder().token(token).build();
+
     }
 }

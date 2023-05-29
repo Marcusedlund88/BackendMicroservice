@@ -29,7 +29,7 @@ public class SecurityApplication {
 			user1.setUsername("Admin");
 			user1.setPassword("admin");
 			user1.setRole(Role.ADMIN);
-			userRepository.save(authenticationService.registerAdmin(user1));
+			authenticationService.registerAdmin(user1, userRepository);
 		};
 	}
 }
