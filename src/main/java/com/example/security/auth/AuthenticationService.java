@@ -23,6 +23,7 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private static final Logger logg = LoggerFactory.getLogger(AuthenticationService.class);
+
     public AuthenticationResponse register(RegistrationRequest request) {
         var user = com.example.security.user.User.builder()
                 .firstname(request.getFirstname())
@@ -36,20 +37,32 @@ public class AuthenticationService {
                 .token(jwtToken)
                 .build();
     }
+
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         logg.info("authenticationResponse");
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                request.getUsername(),
-                request.getPassword()
-        )
-    );
+                        request.getUsername(),
+                        request.getPassword()
+                )
+        );
         var user = repository.findByUsername(request.getUsername())
-            .orElseThrow();
+                .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
+
+    }
+
+    public AuthenticationResponse validateToken(ValidationRequest validationRequest){
+
+        if(jwtService.isTokenValidToken(validationRequest.getToken())){
+            return AuthenticationResponse.builder()
+                    .token(validationRequest.getToken())
+                    .build();
+        }
+        return null;
 
     }
 }
