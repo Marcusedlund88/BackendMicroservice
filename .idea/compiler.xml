@@ -16,6 +16,9 @@
       <module name="com.example.frontend-micro.test" target="17" />
       <module name="frontend-micro.main" target="17" />
       <module name="frontend-micro.test" target="17" />
+      <module name="security" target="17" />
+      <module name="security.main" target="17" />
+      <module name="security.test" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>
